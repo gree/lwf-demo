@@ -1,13 +1,13 @@
 using UnityEngine;
 using System.Collections;
 
-public class Simple : LWFObject {
+public class AnimatedBuilding : LWFObject {
 	
 	void Start()
 	{
 		setLoader();
 		// #1 Show popup lwf/textures
-		Load("gree_logo.lwfdata/gree_logo", "gree_logo.lwfdata/");
+		Load("animated_building.lwfdata/animated_building", "animated_building.lwfdata/");
 	}
 	
 	
