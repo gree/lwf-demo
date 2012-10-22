@@ -1,0 +1,2 @@
+Mon Oct 22 19:05:14 2012
+WARN: Shape(34) is not rect.
