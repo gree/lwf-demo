@@ -1,0 +1,21 @@
+<map id="G" name="G">
+<area shape="rect" id="node2" href="$class_l_w_f_1_1_alpha_transform.html" title="LWF.AlphaTransform" alt="" coords="941,11,1083,37"/>
+<area shape="rect" id="node4" href="$class_l_w_f_1_1_translate.html" title="LWF.Translate" alt="" coords="960,61,1064,88"/>
+<area shape="rect" id="node16" href="$class_l_w_f_1_1_i_object.html" title="IObject" alt="" coords="194,347,257,373"/>
+<area shape="rect" id="node20" href="$class_l_w_f_1_1_i_object.html" title="LWF.IObject" alt="" coords="965,244,1059,271"/>
+<area shape="rect" id="node8" href="$class_l_w_f_1_1_particle.html" title="LWF.Particle" alt="" coords="966,489,1058,516"/>
+<area shape="rect" id="node10" href="$class_l_w_f_1_1_object.html" title="Object" alt="" coords="725,623,785,649"/>
+<area shape="rect" id="node40" href="$class_l_w_f_1_1_bitmap_ex.html" title="LWF.BitmapEx" alt="" coords="958,540,1066,567"/>
+<area shape="rect" id="node44" href="$class_l_w_f_1_1_program_object.html" title="LWF.ProgramObject" alt="" coords="943,591,1081,617"/>
+<area shape="rect" id="node47" href="$class_l_w_f_1_1_bitmap.html" title="LWF.Bitmap" alt="" coords="966,641,1058,668"/>
+<area shape="rect" id="node56" href="$class_l_w_f_1_1_text.html" title="LWF.Text" alt="" coords="974,692,1050,719"/>
+<area shape="rect" id="node59" href="$class_l_w_f_1_1_graphic.html" title="LWF.Graphic" alt="" coords="963,743,1061,769"/>
+<area shape="rect" id="node12" href="$class_l_w_f_1_1_l_w_f.html" title="LWF.LWF" alt="" coords="186,712,265,739"/>
+<area shape="rect" id="node28" href="$class_l_w_f_1_1_renderer.html" title="LWF.Renderer" alt="" coords="441,712,543,739"/>
+<area shape="rect" id="node62" href="$class_l_w_f_1_1_object.html" title="LWF.Object" alt="" coords="709,944,800,971"/>
+<area shape="rect" id="node14" href="$class_l_w_f_1_1_movie.html" title="LWF.Movie" alt="" coords="449,459,535,485"/>
+<area shape="rect" id="node52" href="$class_l_w_f_1_1_button.html" title="LWF.Button" alt="" coords="591,335,679,361"/>
+<area shape="rect" id="node31" href="$class_l_w_f_1_1_color_transform.html" title="LWF.ColorTransform" alt="" coords="424,1091,560,1117"/>
+<area shape="rect" id="node33" href="$class_l_w_f_1_1_color.html" title="LWF.Color" alt="" coords="185,1131,266,1157"/>
+<area shape="rect" id="node38" href="$class_l_w_f_1_1_matrix.html" title="LWF.Matrix" alt="" coords="449,837,535,864"/>
+</map>
