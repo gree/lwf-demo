@@ -28,6 +28,7 @@ window.onload = function() {
         "stage": stage, // * target stage
         "onload": function(lwf) {
              window.gree_icon_lwf = lwf;
+             window.gree_icon_lwf.window.lwf.setFrameRate(60);
         }, // * function that will be called on load
     });
     
@@ -37,6 +38,7 @@ window.onload = function() {
         "stage": stage, // * target stage
         "onload": function(lwf) {
              window.house_lwf = lwf;
+             window.house_lwf.window.lwf.setFrameRate(60);
         }, // * function that will be called on load
     });
 };
