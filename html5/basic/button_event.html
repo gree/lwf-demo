@@ -28,6 +28,7 @@ window.onload = function() {
         "stage": window.stage, // * target stage
         "onload": function(lwf) {
              window.lwf = lwf;
+             window.lwf.setFrameRate(60); // Override animations frame rate. swf's frame rate can be ignored by using setFrameRate()
              window.lwf.setEventHandler("NoticePressEvent", notice_press_event);
         }, // * function that will be called on load
     });
