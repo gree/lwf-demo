@@ -32,6 +32,13 @@
         lwf: lwfName,
         prefix: prefix,
         stage: this.stage,
+        onprogress: function(loadedCount,total) {
+			var ctx = this.stage.getContext('2d');
+			ctx.clearRect(0, 0, this.stage.width, this.stage.height);
+			ctx.font = "10pt Arial";
+			ctx.fillText("loading " +
+				Math.floor(loadedCount / total * 100) + "%", 0, 20);
+		},
         onload: onload,
         useBackgroundColor: true
       });
@@ -44,13 +51,25 @@
 
     LWFPlayer.prototype.load = function(lwfName) {
       var _this = this;
+	  this.init();
       this.requestLWF(lwfName, function(lwf) {
         return _this.lwf = lwf;
       });
+	  var _stage = this.stage;
       return this.loadLWFs(function(errors) {
         if (errors == null) {
-          return _this.init();
-        }
+          return _this.start();
+        } else {
+			var ctx = _stage.getContext('2d');
+			ctx.clearRect(0, 0, _stage.width, _stage.height);
+			ctx.font = "10pt Arial";
+			ctx.fillText("Your browser doesn't support this sample.", 0, 20);
+			var onpress = function() {
+				window.location = "http://gree.github.com/lwf/";
+			};
+			_stage.addEventListener("mousedown", onpress, false);
+			_stage.addEventListener("touchstart", onpress, false);
+		}
       });
     };
 
@@ -104,9 +123,12 @@
 
     LWFPlayer.prototype.init = function() {
       this.inputQueue = [];
-      this.lwf.rendererFactory.fitForHeight(this.lwf);
       this.from = this.getTime();
       this.exec();
+    };
+
+    LWFPlayer.prototype.start = function() {
+      this.lwf.rendererFactory.fitForHeight(this.lwf);
       this.stage.addEventListener("mousedown", this.onpress, false);
       this.stage.addEventListener("mousemove", this.onmove, false);
       this.stage.addEventListener("mouseup", this.onrelease, false);
@@ -135,14 +157,16 @@
       time = this.getTime();
       tick = time - this.from;
       this.from = time;
-      _ref = this.inputQueue;
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        input = _ref[_i];
-        input();
-      }
+	  if (this.lwf != null) {
+        _ref = this.inputQueue;
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          input = _ref[_i];
+          input();
+        }
+        this.lwf.exec(tick);
+        this.lwf.render();
+	  }
       this.inputQueue = [];
-      this.lwf.exec(tick);
-      this.lwf.render();
       return requestAnimationFrame(function() {
         return _this.exec();
       });
