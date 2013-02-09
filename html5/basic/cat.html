@@ -4,7 +4,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <head>
 
-<script type="text/javascript" src="../../../lwf/coffee/js_debug/lwf.js"></script>
+<script type="text/javascript" src="../../js_debug/lwf.js"></script>
 <script type="text/javascript">
 
 // * The "window.onload" is called by web browser
@@ -28,7 +28,7 @@ window.onload = function() {
         "stage": stage, // * target stage
         "onload": function(lwf) {
              window.lwf = lwf;
-             window.lwf.setFrameRate(60); // Override animations frame rate. swf's frame rate can be ignored by using setFrameRate()
+             window.lwf.setFrameRate(60);
         }, // * function that will be called on load
     });
 };
@@ -78,6 +78,6 @@ function stop_start() {
 </script>
 </head>
 <body>
-
+<a href="javascript:stop_start()"> stop/restart </a>
 </body>
 </html>
