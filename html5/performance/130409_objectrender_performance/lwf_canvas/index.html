@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Performance Test - CreateJS</title>
+	<title>Performance Test - LWF Canvas</title>
 	<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=no;">
-	<link rel="stylesheet" href="../commons/style.css">
-	<script src="http://code.createjs.com/createjs-2013.02.12.min.js"></script>
-	<script src="../commons/Stats.js"></script>
+	<link rel="stylesheet" href="http://clockmaker.jp/labs/130409_objectrender_performance/commons/style.css">
+	<script src="lwf.js"></script>
+	<script src="http://clockmaker.jp/labs/130409_objectrender_performance/commons/Stats.js"></script>
 	<script>
 
-		var stage, canvas, container, image;
+		var lwf;
 		var maxCount = 5;
 		var objList = [];
 		var CHILD_NUM = 10;
@@ -18,33 +18,40 @@
 		var STAGE_H = isDesktop ? 600 : (window.innerHeight * 2 / 3 >> 0);
 		var textNumObj;
 		var stats;
-		window.onload = init();
 
-		function init() {
-			image = new Image();
-			image.onload = handleLoad;
-			image.src = "../commons/piyo.png";
+		window.onload = function() {
+			var stage = document.getElementById("myCanvas");
+			stage.width = STAGE_W;
+			stage.height = STAGE_H;
+			stage.style.width = STAGE_W + "px";
+			stage.style.height = STAGE_H + "px";
+
+			LWF.useCanvasRenderer();
+			var lwfCache = LWF.ResourceCache.get();
+			lwfCache.loadLWF({
+				lwf:"objectrender_performance.lwf",
+				imageMap:{"piyo.png":"http://clockmaker.jp/labs/130409_objectrender_performance/commons/piyo.png"},
+				stage:stage,
+				onload:handleLoad
+			});
 		}
 
-		function handleLoad() {
+		function handleLoad(l) {
+			lwf = l;
+
 			textNumObj = document.getElementById("textNumObj");
-			canvas = document.getElementById("myCanvas");
-			canvas.width = STAGE_W;
-			canvas.height = STAGE_H;
-			stage = new createjs.Stage(canvas);
 
 			checkAndAddObj();
-
-			createjs.Ticker.useRAF = true;
-			createjs.Ticker.setFPS(60);
-			createjs.Ticker.addEventListener("tick", handleTick);
 
 			// Stats
 			stats = new Stats();
 			document.getElementById("containerStats").appendChild(stats.getDomElement());
+
+			requestAnimationFrame(tick);
 		}
 
-		function handleTick(event) {
+		function tick(event) {
+
 			var len = objList.length;
 			for (var i = 0; i < len; i++) {
 				var container = objList[i];
@@ -52,9 +59,13 @@
 				container.rotation -= container.vr;
 				if (container.y > STAGE_H) container.y = 0;
 			}
-			stage.update();
+
+			lwf.update(); // instead of lwf.exec(), No Timeline, No Exec :)
+			lwf.render();
 
 			stats.update();
+
+			requestAnimationFrame(tick);
 		}
 
 		function generateObj() {
@@ -62,14 +73,14 @@
 
 			objList = [];
 			for (var i = 0; i < maxCount; i++) {
-				var container = new createjs.Container();
+				var container = lwf.rootMovie.attachMovie("container", "" + i);
 				container.x = Math.random() * STAGE_W;
 				container.vy = 5 * Math.random();
 				container.vr = 5 * Math.random();
 				objList[i] = container;
-				stage.addChild(container);
+				/*
 				for (var j = 0; j < CHILD_NUM; j++) {
-					var child = new createjs.Bitmap(image);
+					var child = container.attachMovie("piyo", "" + j);
 					child.regX = 16;
 					child.regY = 16;
 					var rad = j / CHILD_NUM * 360;
@@ -78,15 +89,16 @@
 					child.rotation = rad;
 					child.scaleX = child.scaleY = j / CHILD_NUM + 0.5;
 					child.alpha = j / CHILD_NUM + 0.1;
-					container.addChild(child);
 				}
+				*/
 			}
+			lwf.exec();	// for lwf.update()
 
 			textNumObj.innerHTML = String(maxCount * CHILD_NUM);
 		}
 
 		function resetObj() {
-			stage.removeAllChildren();
+			lwf.init();
 		}
 
 		function checkAndAddObj() {
@@ -104,8 +116,12 @@
 	<div id="containerStats"></div>
 
 	<ul>
-		<li>2013/04/10 add scale & alpha property</li>
-		<li>2013/04/09 publish 1st version</li>
+		<li><a href="objectrender_performance.fla">objectrender_performance.fla</a></li>
+		<li><a href="objectrender_performance.swf">objectrender_performance.swf</a></li>
+	</ul>
+
+	<ul>
+		<li>2013/04/12 publish 1st version</li>
 	</ul>
 </body>
 </html>
