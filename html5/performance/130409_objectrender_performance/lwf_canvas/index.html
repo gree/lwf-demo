@@ -18,6 +18,37 @@
 		var STAGE_H = isDesktop ? 600 : (window.innerHeight * 2 / 3 >> 0);
 		var textNumObj;
 		var stats;
+		var lastTime;
+
+		if (window.requestAnimationFrame == null) {
+			var vendor, _i, _len, _ref;
+			_ref = ['webkit', 'moz'];
+			for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+				var vendor = _ref[_i];
+				window.requestAnimationFrame =
+					window[vendor + 'RequestAnimationFrame'];
+				if (window.requestAnimationFrame != null) {
+					break;
+				}
+			}
+		}
+		if (window.requestAnimationFrame == null) {
+			lastTime = 0;
+			window.requestAnimationFrame = function(callback, element) {
+				var currTime, id, timeToCall, timeoutCallback;
+				currTime = new Date().getTime();
+				if (lastTime === 0) {
+					lastTime = currTime;
+				}
+				timeToCall = Math.max(0, 16 - (currTime - lastTime));
+				timeoutCallback = function() {
+					return callback(currTime + timeToCall);
+				};
+				id = window.setTimeout(timeoutCallback, timeToCall);
+				lastTime = currTime + timeToCall;
+				return id;
+			};
+		}
 
 		window.onload = function() {
 			var stage = document.getElementById("myCanvas");
