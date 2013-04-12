@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Performance Test - CreateJS</title>
+	<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=no;">
+	<link rel="stylesheet" href="../commons/style.css">
+	<script src="http://code.createjs.com/createjs-2013.02.12.min.js"></script>
+	<script src="../commons/Stats.js"></script>
+	<script>
+
+		var stage, canvas, container, image;
+		var maxCount = 5;
+		var objList = [];
+		var CHILD_NUM = 10;
+		var CHILD_RADIUS = 50;
+		var isDesktop = !(location.search && location.search.length > 0);
+		var STAGE_W = isDesktop ? 800 : window.innerWidth;
+		var STAGE_H = isDesktop ? 600 : (window.innerHeight * 2 / 3 >> 0);
+		var textNumObj;
+		var stats;
+		window.onload = init();
+
+		function init() {
+			image = new Image();
+			image.onload = handleLoad;
+			image.src = "../commons/piyo.png";
+		}
+
+		function handleLoad() {
+			textNumObj = document.getElementById("textNumObj");
+			canvas = document.getElementById("myCanvas");
+			canvas.width = STAGE_W;
+			canvas.height = STAGE_H;
+			stage = new createjs.Stage(canvas);
+
+			checkAndAddObj();
+
+			createjs.Ticker.useRAF = true;
+			createjs.Ticker.setFPS(60);
+			createjs.Ticker.addEventListener("tick", handleTick);
+
+			// Stats
+			stats = new Stats();
+			document.getElementById("containerStats").appendChild(stats.getDomElement());
+		}
+
+		function handleTick(event) {
+			var len = objList.length;
+			for (var i = 0; i < len; i++) {
+				var container = objList[i];
+				container.y += container.vy;
+				container.rotation -= container.vr;
+				if (container.y > STAGE_H) container.y = 0;
+			}
+			stage.update();
+
+			stats.update();
+		}
+
+		function generateObj() {
+			resetObj();
+
+			objList = [];
+			for (var i = 0; i < maxCount; i++) {
+				var container = new createjs.Container();
+				container.x = Math.random() * STAGE_W;
+				container.vy = 5 * Math.random();
+				container.vr = 5 * Math.random();
+				objList[i] = container;
+				stage.addChild(container);
+				for (var j = 0; j < CHILD_NUM; j++) {
+					var child = new createjs.Bitmap(image);
+					child.regX = 16;
+					child.regY = 16;
+					var rad = j / CHILD_NUM * 360;
+					child.x = CHILD_RADIUS * Math.cos(rad * Math.PI / 180);
+					child.y = CHILD_RADIUS * Math.sin(rad * Math.PI / 180);
+					child.rotation = rad;
+					child.scaleX = child.scaleY = j / CHILD_NUM + 0.5;
+					child.alpha = j / CHILD_NUM + 0.1;
+					container.addChild(child);
+				}
+			}
+
+			textNumObj.innerHTML = String(maxCount * CHILD_NUM);
+		}
+
+		function resetObj() {
+			stage.removeAllChildren();
+		}
+
+		function checkAndAddObj() {
+			maxCount = Number(document.getElementById("inputNumObj").value);
+			generateObj();
+		}
+
+	</script>
+</head>
+<body>
+	<canvas id="myCanvas" style="background: #000;"></canvas>
+	<p>Containers : <input id="inputNumObj" type="number" step="10" value="100" min="10" onchange="checkAndAddObj();"><br>
+		Objects : <span id="textNumObj"></span></p>
+
+	<div id="containerStats"></div>
+
+	<ul>
+		<li>2013/04/10 add scale & alpha property</li>
+		<li>2013/04/09 publish 1st version</li>
+	</ul>
+</body>
+</html>
