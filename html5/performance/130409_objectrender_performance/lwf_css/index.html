@@ -20,9 +20,13 @@
 		var stats;
 
 		window.onload = function() {
-			var stage = document.getElementById("myCanvas");
+			var div = document.getElementById("myCanvas");
+			div.style.width = STAGE_W + "px";
+			div.style.height = STAGE_H + "px";
+			var stage = document.createElement("div");
 			stage.style.width = STAGE_W + "px";
 			stage.style.height = STAGE_H + "px";
+			div.appendChild(stage);
 
 			LWF.useWebkitCSSRenderer();
 			var lwfCache = LWF.ResourceCache.get();
@@ -108,7 +112,7 @@
 </head>
 <body>
 	<div id="myCanvas" style="background: #000;"></div>
-	<p>Containers : <input id="inputNumObj" type="number" step="10" value="100" min="10" onchange="checkAndAddObj();"><br>
+	<p>Containers : <input id="inputNumObj" type="number" step="10" value="30" min="10" onchange="checkAndAddObj();"><br>
 		Objects : <span id="textNumObj"></span></p>
 
 	<div id="containerStats"></div>
