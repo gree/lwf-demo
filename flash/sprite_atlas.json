@@ -1,6 +1,6 @@
 {"frames": {
 
-"sprite_atlas_0.png":
+"Lightning.1.jpg":
 {
 	"frame": {"x":968,"y":1286,"w":320,"h":640},
 	"rotated": false,
@@ -8,7 +8,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":320,"h":640},
 	"sourceSize": {"w":320,"h":640}
 },
-"sprite_atlas_1.png":
+"Lightning.10.jpg":
 {
 	"frame": {"x":646,"y":1286,"w":320,"h":640},
 	"rotated": false,
@@ -16,7 +16,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":320,"h":640},
 	"sourceSize": {"w":320,"h":640}
 },
-"sprite_atlas_10.png":
+"Lightning.11.jpg":
 {
 	"frame": {"x":324,"y":1286,"w":320,"h":640},
 	"rotated": false,
@@ -24,7 +24,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":320,"h":640},
 	"sourceSize": {"w":320,"h":640}
 },
-"sprite_atlas_11.png":
+"Lightning.12.jpg":
 {
 	"frame": {"x":1608,"y":644,"w":320,"h":640},
 	"rotated": false,
@@ -32,7 +32,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":320,"h":640},
 	"sourceSize": {"w":320,"h":640}
 },
-"sprite_atlas_2.png":
+"Lightning.2.jpg":
 {
 	"frame": {"x":966,"y":324,"w":320,"h":640},
 	"rotated": true,
@@ -40,7 +40,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":320,"h":640},
 	"sourceSize": {"w":320,"h":640}
 },
-"sprite_atlas_3.png":
+"Lightning.3.jpg":
 {
 	"frame": {"x":324,"y":324,"w":320,"h":640},
 	"rotated": true,
@@ -48,7 +48,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":320,"h":640},
 	"sourceSize": {"w":320,"h":640}
 },
-"sprite_atlas_4.png":
+"Lightning.4.jpg":
 {
 	"frame": {"x":1608,"y":2,"w":320,"h":640},
 	"rotated": false,
@@ -56,7 +56,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":320,"h":640},
 	"sourceSize": {"w":320,"h":640}
 },
-"sprite_atlas_5.png":
+"Lightning.5.jpg":
 {
 	"frame": {"x":966,"y":2,"w":320,"h":640},
 	"rotated": true,
@@ -64,7 +64,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":320,"h":640},
 	"sourceSize": {"w":320,"h":640}
 },
-"sprite_atlas_6.png":
+"Lightning.6.jpg":
 {
 	"frame": {"x":324,"y":2,"w":320,"h":640},
 	"rotated": true,
@@ -72,7 +72,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":320,"h":640},
 	"sourceSize": {"w":320,"h":640}
 },
-"sprite_atlas_7.png":
+"Lightning.7.jpg":
 {
 	"frame": {"x":2,"y":1286,"w":320,"h":640},
 	"rotated": false,
@@ -80,7 +80,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":320,"h":640},
 	"sourceSize": {"w":320,"h":640}
 },
-"sprite_atlas_8.png":
+"Lightning.8.jpg":
 {
 	"frame": {"x":2,"y":644,"w":320,"h":640},
 	"rotated": false,
@@ -88,7 +88,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":320,"h":640},
 	"sourceSize": {"w":320,"h":640}
 },
-"sprite_atlas_9.png":
+"Lightning.9.jpg":
 {
 	"frame": {"x":2,"y":2,"w":320,"h":640},
 	"rotated": false,
@@ -100,9 +100,9 @@
 	"app": "http://www.texturepacker.com",
 	"version": "1.0",
 	"image": "sprite_atlas_texture.png",
-	"format": "RGBA8888",
+	"format": "RGBA4444",
 	"size": {"w":2048,"h":2048},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:1f8b8433adbc10cbe2bd24484b85a0f8$"
+	"smartupdate": "$TexturePacker:SmartUpdate:7e5e1244afc1885ca4f932ce06ae5863$"
 }
 }
