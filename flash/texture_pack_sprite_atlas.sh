@@ -1,0 +1,1 @@
+/Applications/TexturePacker.app/Contents/MacOS/TexturePacker --opt RGBA4444 --scale 1.0 --format json --data sprite_atlas.json --sheet "sprite_atlas_texture.png" sprite_atlas.bitmap/*

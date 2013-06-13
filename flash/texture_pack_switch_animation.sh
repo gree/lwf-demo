@@ -1,0 +1,1 @@
+/Applications/TexturePacker.app/Contents/MacOS/TexturePacker --opt RGBA4444 --scale 1.0 --format json --data switch_animation.json --sheet "switch_animation_texture.png" switch_animation.bitmap/*.png
