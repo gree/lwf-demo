@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Performance Test - LWF Canvas</title>
+	<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=no;">
+	<link rel="stylesheet" href="http://clockmaker.jp/labs/130409_objectrender_performance/commons/style.css">
+	<script src="lwf.js"></script>
+	<script src="http://clockmaker.jp/labs/130409_objectrender_performance/commons/Stats.js"></script>
+	<script>
+
+		var lwf;
+		var maxCount = 5;
+		var objList = [];
+		var CHILD_NUM = 10;
+		var CHILD_RADIUS = 50;
+		var isDesktop = !(location.search && location.search.length > 0);
+		var STAGE_W = isDesktop ? 800 : window.innerWidth;
+		var STAGE_H = isDesktop ? 600 : (window.innerHeight * 2 / 3 >> 0);
+		var textNumObj;
+		var stats;
+		var lastTime;
+
+		if (window.requestAnimationFrame == null) {
+			var vendor, _i, _len, _ref;
+			_ref = ['webkit', 'moz'];
+			for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+				var vendor = _ref[_i];
+				window.requestAnimationFrame =
+					window[vendor + 'RequestAnimationFrame'];
+				if (window.requestAnimationFrame != null) {
+					break;
+				}
+			}
+		}
+		if (window.requestAnimationFrame == null) {
+			lastTime = 0;
+			window.requestAnimationFrame = function(callback, element) {
+				var currTime, id, timeToCall, timeoutCallback;
+				currTime = new Date().getTime();
+				if (lastTime === 0) {
+					lastTime = currTime;
+				}
+				timeToCall = Math.max(0, 16 - (currTime - lastTime));
+				timeoutCallback = function() {
+					return callback(currTime + timeToCall);
+				};
+				id = window.setTimeout(timeoutCallback, timeToCall);
+				lastTime = currTime + timeToCall;
+				return id;
+			};
+		}
+
+		window.onload = function() {
+			var stage = document.getElementById("myCanvas");
+			stage.width = STAGE_W;
+			stage.height = STAGE_H;
+			stage.style.width = STAGE_W + "px";
+			stage.style.height = STAGE_H + "px";
+
+			LWF.useWebGLRenderer();
+			var lwfCache = LWF.ResourceCache.get();
+			lwfCache.loadLWF({
+				lwf:"objectrender_performance.lwf",
+				//imageMap:{"piyo.png":"http://clockmaker.jp/labs/130409_objectrender_performance/commons/piyo.png"},
+				imageMap:{"piyo.png":"piyo.png"},
+				stage:stage,
+				onload:handleLoad
+			});
+		}
+
+		function handleLoad(l) {
+			lwf = l;
+
+			textNumObj = document.getElementById("textNumObj");
+
+			checkAndAddObj();
+
+			// Stats
+			stats = new Stats();
+			document.getElementById("containerStats").appendChild(stats.getDomElement());
+
+			requestAnimationFrame(tick);
+		}
+
+		function tick(event) {
+
+			var len = objList.length;
+			for (var i = 0; i < len; i++) {
+				var container = objList[i];
+				container.y += container.vy;
+				container.rotation -= container.vr;
+				if (container.y > STAGE_H) container.y = 0;
+			}
+
+			lwf.update(); // instead of lwf.exec(), No Timeline, No Exec :)
+			lwf.render();
+
+			stats.update();
+
+			requestAnimationFrame(tick);
+		}
+
+		function generateObj() {
+			resetObj();
+
+			objList = [];
+			for (var i = 0; i < maxCount; i++) {
+				var container = lwf.rootMovie.attachEmptyMovie("" + i);
+				container.x = Math.random() * STAGE_W;
+				container.vy = 5 * Math.random();
+				container.vr = 5 * Math.random();
+				objList[i] = container;
+				for (var j = 0; j < CHILD_NUM; j++) {
+					var child = container.attachBitmap("piyo.png", j);
+					child.regX = 16;
+					child.regY = 16;
+					var rad = j / CHILD_NUM * 360;
+					child.x = CHILD_RADIUS * Math.cos(rad * Math.PI / 180);
+					child.y = CHILD_RADIUS * Math.sin(rad * Math.PI / 180);
+					child.rotation = rad;
+					child.scaleX = child.scaleY = j / CHILD_NUM + 0.5;
+					child.alpha = j / CHILD_NUM + 0.1;
+				}
+			}
+			lwf.exec();	// for lwf.update()
+
+			textNumObj.innerHTML = String(maxCount * CHILD_NUM);
+		}
+
+		function resetObj() {
+			lwf.init();
+		}
+
+		function checkAndAddObj() {
+			maxCount = Number(document.getElementById("inputNumObj").value);
+			generateObj();
+		}
+
+	</script>
+</head>
+<body>
+	<canvas id="myCanvas" style="background: #000;"></canvas>
+	<p>Containers : <input id="inputNumObj" type="number" step="10" value="100" min="10" onchange="checkAndAddObj();"><br>
+		Objects : <span id="textNumObj"></span></p>
+
+	<div id="containerStats"></div>
+
+	<ul>
+		<li><a href="objectrender_performance.fla">objectrender_performance.fla</a></li>
+		<li><a href="objectrender_performance.swf">objectrender_performance.swf</a></li>
+	</ul>
+
+	<ul>
+		<li>2013/04/12 publish 1st version</li>
+	</ul>
+</body>
+</html>
