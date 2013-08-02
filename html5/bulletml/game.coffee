@@ -42,12 +42,24 @@ class Obj
   constructor:(@x, @y, @d, @v, name) ->
     @alive = true
     @bitmap = null
+    @x0 = @sx0 = 0
+    @y0 = @sy0 = 0
+    @x1 = @sx1 = game.width
+    @y1 = @sy1 = game.height
     @attachBitmap(name) if name
 
   attachBitmap:(name) ->
     @bitmap = game.attachBitmap(name)
     @bitmap.regX = @bitmap.width / 2
     @bitmap.regY = @bitmap.height / 2
+    @x0 += @bitmap.regX
+    @y0 += @bitmap.regY
+    @x1 -= @bitmap.regX
+    @y1 -= @bitmap.regY
+    @sx0 -= @bitmap.regX
+    @sy0 -= @bitmap.regY
+    @sx1 += @bitmap.regX
+    @sy1 += @bitmap.regY
     return
 
   move: ->
@@ -60,19 +72,18 @@ class Obj
     return
 
   ensureBounded: ->
-    if @x < 4
-      @x = 4
-    else if @x > window.game.width - 4
-      @x = game.width - 4
-    if @y < 4
-      @y = 4
-    else if @y > window.game.height - 4
-      @y = game.height - 4
+    if @x < @x0
+      @x = @x0
+    else if @x > @x1
+      @x = @x1
+    if @y < @y0
+      @y = @y0
+    else if @y > @y1
+      @y = @y1
     return
 
   checkBounded: ->
-    if @x < 4 or @x > window.game.width - 4 or
-        @y < 4 or @y > window.game.height - 4
+    if @x < @sx0 or @x > @sx1 or @y < @sy0 or @y > @sy1
       @doVanish()
     return
 
@@ -83,7 +94,7 @@ class Obj
     return
 
 class Shot extends Obj
-  constructor:(x, y, d, v, name = 'shot.png') ->
+  constructor:(x, y, d, v, name = 'w') ->
     super(x, y, d, v, name)
 
   move: ->
@@ -95,7 +106,7 @@ class Shot extends Obj
 
 class Player extends Obj
   constructor: ->
-    super(game.width / 2, 350, 0, 0, 'shot.png')
+    super(game.width / 2, 350, 0, 0, 'r')
 
   move: ->
     v = if keyState[90] then 1 else 2
@@ -127,8 +138,9 @@ class Player extends Obj
     return
 
 class Enemy extends Obj
-  constructor:(@runner, x, y, d, v, name, @isBoss) ->
+  constructor:(@runner, x, y, d, v, name) ->
     super(x, y, d, v, name)
+    @isBoss = name is 'g'
     @runner.obj = @
 
   move: ->
@@ -182,7 +194,7 @@ class Enemy extends Obj
     runner = new BulletMLRunner(state.bulletml, state)
     hasFire = (state.nodes[0].getElementsByTagName('fire') or
       state.nodes[0].getElementsByTagName('fireRef'))
-    color = hasFire ? 'shot.png' : 'shot.png'
+    color = hasFire ? 'wg' : 'wr'
     shot = new Enemy(runner, @x, @y, d, v, color, false)
     objs.push(shot)
     return
@@ -206,11 +218,11 @@ class Enemy extends Obj
     return
 
 class Game
-  constructor:(@touchDelegate, @stage, @width, @height, @xml) ->
+  constructor:(@touchDelegate, @stage, stats, @width, @height, @xml) ->
     @requests = []
 
     @stats = new Stats()
-    document.body.appendChild(@stats.domElement)
+    stats.appendChild(@stats.domElement)
 
     LWF.useWebGLRenderer()
     #LWF.useCanvasRenderer()
@@ -241,12 +253,13 @@ class Game
     return
 
   attachBitmap:(name) ->
+    path = "ball_#{name}.png"
     cache = @bitmapCache[name]
     if cache?.length > 0
       bitmap = cache.pop()
       bitmap.visible = true
     else
-      bitmap = @world.attachBitmap(name, @bitmapCount++)
+      bitmap = @world.attachBitmap(path, @bitmapCount++)
     return bitmap
 
   detachBitmap:(bitmap) ->
@@ -309,7 +322,7 @@ class Game
     @objs.push(@player)
 
     @runner = new BulletMLRunner(@xml)
-    enemy = new Enemy(@runner, @width / 2, 100, 0, 0, 'shot.png')
+    enemy = new Enemy(@runner, @width / 2, 100, 0, 0, 'g')
     @objs.push(enemy)
 
     @exec()
@@ -354,6 +367,7 @@ class Game
 window.onload = ->
   div = document.getElementById("touchDelegate")
   stage = document.getElementById("stage")
+  stats = document.getElementById("stats")
   w = stage.width
   h = stage.height
   stage.style.width = stage.width + "px"
@@ -369,7 +383,7 @@ window.onload = ->
         throw new Error("#{xhr.status}:#{src}")
       else
         xml = xhr.responseXML.getElementsByTagName('bulletml')[0]
-        game = new Game(div, stage, w, h, xml)
+        game = new Game(div, stage, stats, w, h, xml)
         game.load("game.lwf")
         window.game = game
   xhr.open('GET', src, true)

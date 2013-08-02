@@ -49,6 +49,10 @@
       this.v = v;
       this.alive = true;
       this.bitmap = null;
+      this.x0 = this.sx0 = 0;
+      this.y0 = this.sy0 = 0;
+      this.x1 = this.sx1 = game.width;
+      this.y1 = this.sy1 = game.height;
       if (name) {
         this.attachBitmap(name);
       }
@@ -58,6 +62,14 @@
       this.bitmap = game.attachBitmap(name);
       this.bitmap.regX = this.bitmap.width / 2;
       this.bitmap.regY = this.bitmap.height / 2;
+      this.x0 += this.bitmap.regX;
+      this.y0 += this.bitmap.regY;
+      this.x1 -= this.bitmap.regX;
+      this.y1 -= this.bitmap.regY;
+      this.sx0 -= this.bitmap.regX;
+      this.sy0 -= this.bitmap.regY;
+      this.sx1 += this.bitmap.regX;
+      this.sy1 += this.bitmap.regY;
     };
 
     Obj.prototype.move = function() {};
@@ -70,20 +82,20 @@
     };
 
     Obj.prototype.ensureBounded = function() {
-      if (this.x < 4) {
-        this.x = 4;
-      } else if (this.x > window.game.width - 4) {
-        this.x = game.width - 4;
+      if (this.x < this.x0) {
+        this.x = this.x0;
+      } else if (this.x > this.x1) {
+        this.x = this.x1;
       }
-      if (this.y < 4) {
-        this.y = 4;
-      } else if (this.y > window.game.height - 4) {
-        this.y = game.height - 4;
+      if (this.y < this.y0) {
+        this.y = this.y0;
+      } else if (this.y > this.y1) {
+        this.y = this.y1;
       }
     };
 
     Obj.prototype.checkBounded = function() {
-      if (this.x < 4 || this.x > window.game.width - 4 || this.y < 4 || this.y > window.game.height - 4) {
+      if (this.x < this.sx0 || this.x > this.sx1 || this.y < this.sy0 || this.y > this.sy1) {
         this.doVanish();
       }
     };
@@ -103,7 +115,7 @@
 
     function Shot(x, y, d, v, name) {
       if (name == null) {
-        name = 'shot.png';
+        name = 'w';
       }
       Shot.__super__.constructor.call(this, x, y, d, v, name);
     }
@@ -125,7 +137,7 @@
     __extends(Player, _super);
 
     function Player() {
-      Player.__super__.constructor.call(this, game.width / 2, 350, 0, 0, 'shot.png');
+      Player.__super__.constructor.call(this, game.width / 2, 350, 0, 0, 'r');
     }
 
     Player.prototype.move = function() {
@@ -169,10 +181,10 @@
   Enemy = (function(_super) {
     __extends(Enemy, _super);
 
-    function Enemy(runner, x, y, d, v, name, isBoss) {
+    function Enemy(runner, x, y, d, v, name) {
       this.runner = runner;
-      this.isBoss = isBoss;
       Enemy.__super__.constructor.call(this, x, y, d, v, name);
+      this.isBoss = name === 'g';
       this.runner.obj = this;
     }
 
@@ -248,7 +260,7 @@
       runner = new BulletMLRunner(state.bulletml, state);
       hasFire = state.nodes[0].getElementsByTagName('fire') || state.nodes[0].getElementsByTagName('fireRef');
       color = hasFire != null ? hasFire : {
-        'shot.png': 'shot.png'
+        'wg': 'wr'
       };
       shot = new Enemy(runner, this.x, this.y, d, v, color, false);
       objs.push(shot);
@@ -283,7 +295,7 @@
   })(Obj);
 
   Game = (function() {
-    function Game(touchDelegate, stage, width, height, xml) {
+    function Game(touchDelegate, stage, stats, width, height, xml) {
       this.touchDelegate = touchDelegate;
       this.stage = stage;
       this.width = width;
@@ -294,7 +306,7 @@
       this.onmove = __bind(this.onmove, this);
       this.requests = [];
       this.stats = new Stats();
-      document.body.appendChild(this.stats.domElement);
+      stats.appendChild(this.stats.domElement);
       LWF.useWebGLRenderer();
     }
 
@@ -334,14 +346,15 @@
     };
 
     Game.prototype.attachBitmap = function(name) {
-      var bitmap, cache;
+      var bitmap, cache, path;
 
+      path = "ball_" + name + ".png";
       cache = this.bitmapCache[name];
       if ((cache != null ? cache.length : void 0) > 0) {
         bitmap = cache.pop();
         bitmap.visible = true;
       } else {
-        bitmap = this.world.attachBitmap(name, this.bitmapCount++);
+        bitmap = this.world.attachBitmap(path, this.bitmapCount++);
       }
       return bitmap;
     };
@@ -422,7 +435,7 @@
       this.player = new Player;
       this.objs.push(this.player);
       this.runner = new BulletMLRunner(this.xml);
-      enemy = new Enemy(this.runner, this.width / 2, 100, 0, 0, 'shot.png');
+      enemy = new Enemy(this.runner, this.width / 2, 100, 0, 0, 'g');
       this.objs.push(enemy);
       this.exec();
       /*
@@ -486,10 +499,11 @@
   })();
 
   window.onload = function() {
-    var div, h, src, stage, w, xhr;
+    var div, h, src, stage, stats, w, xhr;
 
     div = document.getElementById("touchDelegate");
     stage = document.getElementById("stage");
+    stats = document.getElementById("stats");
     w = stage.width;
     h = stage.height;
     stage.style.width = stage.width + "px";
@@ -506,7 +520,7 @@
           throw new Error("" + xhr.status + ":" + src);
         } else {
           xml = xhr.responseXML.getElementsByTagName('bulletml')[0];
-          game = new Game(div, stage, w, h, xml);
+          game = new Game(div, stage, stats, w, h, xml);
           game.load("game.lwf");
           return window.game = game;
         }
