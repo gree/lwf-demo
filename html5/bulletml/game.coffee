@@ -224,8 +224,10 @@ class Game
     @stats = new Stats()
     stats.appendChild(@stats.domElement)
 
-    LWF.useWebGLRenderer()
-    #LWF.useCanvasRenderer()
+    if window.location.search.match(/canvas/)
+      LWF.useCanvasRenderer()
+    else
+      LWF.useWebGLRenderer()
 
   requestLWF:(lwfName, onload) ->
     if lwfName.match(/(.*\/)([^\/]+)/)
