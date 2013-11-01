@@ -1,0 +1,16 @@
+LWF
+===
+
+* LWF
+  https://github.com/gree/lwf/LICENSE
+  (zLib license)
+    * LWF depends on 3rd party software. The following contains details.
+      https://github.com/gree/lwf/LICENSE.3RDPARTY
+
+
+Python
+======
+
+* Closure Compiler
+  http://code.google.com/p/closure-compiler/
+  (Apache License 2.0)
