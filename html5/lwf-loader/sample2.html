@@ -48,12 +48,10 @@
                 tElements[i].setAttribute("data-lwf-setting", JSON.stringify(setting));
                 tElements[i].setAttribute("data-lwf-prefix", setting.prefix);
                 tElements[i].setAttribute("data-lwf-name", 'sample2_max_optimized.lwf');
-                tElements[i].setAttribute("data-debug", '1');
 
                 var tLwfLoader = new window['LwfLoader']();
                 tLwfLoader.addInitializeHook(paramHandler);
                 tLwfLoader.addInitializeHook(paramCallback);
-                tLwfLoader.debug = true;
                 tLwfLoader['playLWF'](tElements[i]);
             }
         });

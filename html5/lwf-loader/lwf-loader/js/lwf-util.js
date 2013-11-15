@@ -1,6 +1,3 @@
-/** global variable determines whether entering debug mode */
-window['LWFLOADER_ENABLE_DEBUG'] = true;
-
 /** Utility object */
 window['Utility'] = {};
 
