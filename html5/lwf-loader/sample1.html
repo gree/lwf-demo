@@ -1,69 +1,79 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="utf-8">
-    <meta name="format-detection" content="telephone=no">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no,maximum-scale=1.0,minimum-scale=1.0" />
+  <meta charset="utf-8">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no,maximum-scale=1.0,minimum-scale=1.0" />
 
-    <link rel="stylesheet" type="text/css" href="css/sample.css">
-    <script type="text/javascript" src="js/lwf.js"></script>
-    <script type="text/javascript" src="js/underscore-min.js"></script>
-    <script type="text/javascript" src="lwf-loader/js/lwf-util.js"></script>
-    <script type="text/javascript" src="lwf-loader/js/lwf-loader.js"></script>
+  <link rel="stylesheet" type="text/css" href="css/sample.css">
+  <script type="text/javascript" src="js/lwf.js"></script>
+  <script type="text/javascript" src="js/underscore-min.js"></script>
+  <script type="text/javascript" src="lwf-loader/js/lwf-util.js"></script>
+  <script type="text/javascript" src="lwf-loader/js/lwf-loader.js"></script>
 
-    <script type="text/javascript">
-        var paramHandler = function (pElement) {
-            return {
-                handler: {
-                    loadError: function (e) {
-                        console.log(e);
-                    },
+  <script type="text/javascript">
+    var paramHandler = function (pElement) {
+      return {
+        handler: {
+          loadError: function (e) {
+            console.log(e);
+          },
 
-                    exception: function (e) {
-                        console.log(e);
-                    }
-                }
-            }
-        };
+          exception: function (e) {
+            console.log(e);
+          }
+        }
+      }
+    };
 
-        var paramCallback = function (pElement) {
-            return {
-                callback: {
-                    onLoad: function (pLwf) {
-                        console.log(pLwf);
-                    }
-                }
-            }
-        };
+    var paramCallback = function (pElement) {
+      return {
+        callback: {
+          onLoad: function (pLwf) {
+            console.log(pLwf);
+          }
+        }
+      }
+    };
 
-        var setting = {
-            prefix: "./sample1_max_optimized/",
-            imagePrefix: "./sample1_max_optimized/",
-            renderer: 'canvas',
-            privateData: {}
-        };
+    var setting = {
+      lwf: "sample1_max_optimized.lwf",
+      prefix: "./sample1_max_optimized/",
+      imagePrefix: "./sample1_max_optimized/",
+      renderer: 'canvas',
+      privateData: {},
+      onprogress: function(loadedCount,total) {
+        var myLoadingElem = document.getElementById("loading");
+        var myGaugeElem = myLoadingElem.querySelector("b.gauge");
+        var myPercentElem = myLoadingElem.querySelector("b.percent");
 
-        window.addEventListener('DOMContentLoaded', function() {
-            var tElements = document.querySelectorAll('.lwf');
-            for (var i = 0; i < tElements.length; i++) {
-                tElements[i].setAttribute("data-lwf-setting", JSON.stringify(setting));
-                tElements[i].setAttribute("data-lwf-prefix", setting.prefix);
-                tElements[i].setAttribute("data-lwf-name", 'sample1_max_optimized.lwf');
+        if (loadedCount == total) {
+          myLoadingElem.parentNode.removeChild(myLoadingElem);
+        } else {
+          var currentProgress = 100 * loadedCount / total;
+          myGaugeElem.style.width = myPercentElem.textContent = 'Now Loading: ' +
+            Math.ceil(currentProgress / 2 + 50) + '%';
+        }
+      }
+    };
 
-                var tLwfLoader = new window['LwfLoader']();
-                tLwfLoader.addInitializeHook(paramHandler);
-                tLwfLoader.addInitializeHook(paramCallback);
-                tLwfLoader['playLWF'](tElements[i]);
-            }
-        });
-    </script>
+    var lwfLoader = new window['LwfLoader']();
+
+    window.addEventListener('DOMContentLoaded', function() {
+      var element = document.getElementById('card-lwf');
+      lwfLoader.addInitializeHook(paramHandler);
+      lwfLoader.addInitializeHook(paramCallback);
+      lwfLoader['playLWF'](element, setting);
+    });
+  </script>
 </head>
 <body>
-    <p class="header"><span>LWF for HTML5/Canvas using LWF Loader - sample1</span></p>
-    <div class='lwf' style="width:320px; height:420px; margin:0 auto;">
-    </div>
-    <center style="margin-top:30px">
-        <a href="http://gree.github.com/lwf/"><img src="http://gree.github.com/lwf-demo/images/LWF-logo.png" height=100></a>
-    </center>
+<p class="header"><span>LWF for HTML5/Canvas using LWF Loader - sample1</span></p>
+<div id='card-lwf' class='lwf' style="width:320px; height:420px; margin:0 auto;">
+  <div id="loading"><b class="gauge percent"></b></div>
+</div>
+<center style="margin-top:30px">
+  <a href="http://gree.github.com/lwf/"><img src="http://gree.github.com/lwf-demo/images/LWF-logo.png" height=100></a>
+</center>
 </body>
 </html>

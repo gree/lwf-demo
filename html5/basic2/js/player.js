@@ -33,12 +33,12 @@
         prefix: prefix,
         stage: this.stage,
         onprogress: function(loadedCount,total) {
-			var ctx = this.stage.getContext('2d');
-			ctx.clearRect(0, 0, this.stage.width, this.stage.height);
-			ctx.font = "10pt Arial";
-			ctx.fillText("loading " +
-				Math.floor(loadedCount / total * 100) + "%", 0, 20);
-		},
+    			var ctx = this.stage.getContext('2d');
+    			ctx.clearRect(0, 0, this.stage.width, this.stage.height);
+    			ctx.font = "10pt Arial";
+    			ctx.fillText("loading " +
+    				Math.floor(loadedCount / total * 100) + "%", 0, 20);
+    		},
         onload: onload,
         useBackgroundColor: true
       });

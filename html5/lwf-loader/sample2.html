@@ -37,30 +37,40 @@
         };
 
         var setting = {
-            prefix: "./sample2_max_optimized/",
-            imagePrefix: "./sample2_max_optimized/",
-            privateData: {}
+          lwf: "sample2_max_optimized.lwf",
+          prefix: "./sample2_max_optimized/",
+          imagePrefix: "./sample2_max_optimized/",
+          privateData: {},
+          onprogress: function(loadedCount,total) {
+            var myLoadingElem = document.getElementById("loading");
+            var myGaugeElem = myLoadingElem.querySelector("b.gauge");
+            var myPercentElem = myLoadingElem.querySelector("b.percent");
+
+            if (loadedCount == total) {
+              myLoadingElem.parentNode.removeChild(myLoadingElem);
+            } else {
+              var currentProgress = 100 * loadedCount / total;
+              myGaugeElem.style.width = myPercentElem.textContent = 'Now Loading: ' +
+                Math.ceil(currentProgress / 2 + 50) + '%';
+            }
+          }
         };
 
-        window.addEventListener('DOMContentLoaded', function() {
-            var tElements = document.querySelectorAll('.lwf');
-            for (var i = 0; i < tElements.length; i++) {
-                tElements[i].setAttribute("data-lwf-setting", JSON.stringify(setting));
-                tElements[i].setAttribute("data-lwf-prefix", setting.prefix);
-                tElements[i].setAttribute("data-lwf-name", 'sample2_max_optimized.lwf');
+        var lwfLoader = new window['LwfLoader']();
 
-                var tLwfLoader = new window['LwfLoader']();
-                tLwfLoader.addInitializeHook(paramHandler);
-                tLwfLoader.addInitializeHook(paramCallback);
-                tLwfLoader['playLWF'](tElements[i]);
-            }
+        window.addEventListener('DOMContentLoaded', function() {
+          var element = document.getElementById('card-lwf');
+          lwfLoader.addInitializeHook(paramHandler);
+          lwfLoader.addInitializeHook(paramCallback);
+          lwfLoader['playLWF'](element, setting);
         });
     </script>
 </head>
 <body>
-    <p class="header"><span>LWF for HTML5/Canvas using LWF Loader - sample2</span></p>
-    <div class='lwf' style="width:320px; height:420px; margin:0 auto;">
-    </div>
+<p class="header"><span>LWF for HTML5/Canvas using LWF Loader - sample2</span></p>
+<div id='card-lwf' class='lwf' style="width:320px; height:420px; margin:0 auto;">
+  <div id="loading"><b class="gauge percent"></b></div>
+</div>
     <center style="margin-top:30px">
         <a href="http://gree.github.com/lwf/"><img src="http://gree.github.com/lwf-demo/images/LWF-logo.png" height=100></a>
     </center>

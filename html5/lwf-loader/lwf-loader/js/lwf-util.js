@@ -95,10 +95,11 @@ window['Utility']['getRenderer'] = function() {
 
   /**
    * Self-defined console function to display logs
+   * to use this feature, include 'window['LWFLOADER_ENABLE_DEBUG'] = true;' in your file
    * @return {*}
    */
   function fakeConsoleLog() {
-    if (!window['LWFLOADER_ENABLE_DEBUG']) {
+    if (!global['LWFLOADER_ENABLE_DEBUG']) {
       return;
     }
 
@@ -125,10 +126,11 @@ window['Utility']['getRenderer'] = function() {
 
   /**
    * Self-defined console function to display warnings
+   * to use this feature, include 'window['LWFLOADER_ENABLE_DEBUG'] = true;' in your file
    * @return {*}
    */
   function fakeConsoleWarn() {
-    if (!window['LWFLOADER_ENABLE_DEBUG']) {
+    if (!global['LWFLOADER_ENABLE_DEBUG']) {
       return;
     }
     return deviceNativeConsoleFunction.warn.apply(global.console, arguments);
@@ -136,13 +138,13 @@ window['Utility']['getRenderer'] = function() {
 
   /**
    * Self-defined console function to display error logs
+   * to use this feature, include 'window['LWFLOADER_ENABLE_DEBUG'] = true;' in your file
    * @return {*}
    */
   function fakeConsoleError() {
-    if (!window['LWFLOADER_ENABLE_DEBUG']) {
+    if (!global['LWFLOADER_ENABLE_DEBUG']) {
       return;
     }
     return deviceNativeConsoleFunction.error.apply(global.console, arguments);
   }
-
 })(window);
