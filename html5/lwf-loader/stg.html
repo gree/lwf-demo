@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no,maximum-scale=1.0,minimum-scale=1.0" />
+
+  <script type="text/javascript" src="js/lwf.js"></script>
+  <script type="text/javascript" src="js/underscore-min.js"></script>
+  <script type="text/javascript" src="lwf-loader/js/lwf-util.js"></script>
+  <script type="text/javascript" src="lwf-loader/js/lwf-loader.js"></script>
+
+  <script type="text/javascript">
+    var setting = {
+      lwf: "DemoSTG.lwf",
+      prefix: "./stg-sample/",
+      privateData: {}
+    };
+
+    var displaySetting = {
+      resizeMode: "fitForWidth",
+      resizeStretch: true,
+      displayDivId: 'stg',
+      widthLimit: 437,
+      heightLimit: 575
+    };
+
+    window.addEventListener('DOMContentLoaded', function() {
+      var lwfLoader = new window.LwfLoader();
+      var element = document.getElementById('stg');
+      lwfLoader.setDisplaySetting(displaySetting);
+      lwfLoader.playLWF(element, setting);
+    });
+
+    window.addEventListener("load",function(){
+      document.getElementById("back").addEventListener("touchmove",function(e){
+        e.preventDefault();
+      });
+    })
+  </script>
+</head>
+<body style="margin: 0px">
+<div id="stg" class='lwf' style="margin: 0 auto;">
+  <div id="back" style="background-color: #000000"></div>
+</div>
+
+<div id='guild-create' class='lwf'></div>
+</body>
+</html>

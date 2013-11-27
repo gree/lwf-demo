@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no,maximum-scale=1.0,minimum-scale=1.0" />
+  <script type="text/javascript" src="js/lwf.js"></script>
+  <script type="text/javascript" src="js/underscore-min.js"></script>
+  <script type="text/javascript" src="lwf-loader/js/lwf-util.js"></script>
+  <script type="text/javascript" src="lwf-loader/js/lwf-loader.js"></script>
+
+  <script type="text/javascript">
+    var setting = {
+      lwf:'base/base.lwf',
+      prefix: "./loadlwf-sample/",
+      privateData: {
+      },
+      imageMap: {
+        'atlas.png' : 'base/atlas.png'
+      },
+      lwfMap: {
+        'PARTS/parts1' : 'PARTS/parts1/parts1.lwf',
+        'PARTS/parts2' : 'PARTS/parts2/parts2.lwf',
+        'PARTS/parts3' : 'PARTS/parts3/parts3.lwf'
+      }
+    };
+
+    window.addEventListener('DOMContentLoaded', function() {
+      var element = document.getElementById('lwf-sample');
+      var lwfLoader = new window.LwfLoader();
+      lwfLoader.playLWF(element, setting);
+    });
+  </script>
+</head>
+<body style="margin: 0px;">
+<div id='lwf-sample' class='lwf'></div>
+</body>
+</html>

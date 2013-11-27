@@ -1,45 +1,5 @@
 /** Utility object */
-window['Utility'] = {};
-
-/**
- * addVirtualTouchEnd
- * canceling events when the first pointer moved from starting point.
- * @param {*} targetElement
- * @param {*} targetFunction
- * @param {Boolean} targetCapturing
- */
-window['Utility']['addVirtualTouchEnd'] = function(targetElement, targetFunction, targetCapturing) {
-  var prevTouch = null,
-    prevTouchX = 0,
-    prevTouchY = 0;
-
-  targetElement.addEventListener('touchstart', function(targetEvent) {
-    targetEvent.preventDefault();
-    if (targetEvent.changedTouches && targetEvent.changedTouches[0]) {
-      prevTouch = targetEvent.changedTouches[0];
-      prevTouchX = prevTouch.clientX;
-      prevTouchY = prevTouch.clientY;
-    }
-  }, targetCapturing);
-
-  targetElement.addEventListener('touchend', function(targetEvent) {
-    targetEvent.preventDefault();
-
-    if (prevTouch === null) {
-      return;
-    }
-
-    if (prevTouch && targetEvent.changedTouches && targetEvent.changedTouches[0]) {
-      var dx = prevTouchX - targetEvent.changedTouches[0].clientX;
-      var dy = prevTouchY - targetEvent.changedTouches[0].clientY;
-      if (dx * dx + dy * dy > 400) {
-        return;
-      }
-    }
-    prevTouch = null;
-    targetFunction(targetEvent);
-  }, targetCapturing);
-};
+window.Utility = {};
 
 /**
  * Determine which renderer to use for current running environment
@@ -47,7 +7,7 @@ window['Utility']['addVirtualTouchEnd'] = function(targetElement, targetFunction
  * All iOS devices will run on canvas renderer
  * @return {string}
  */
-window['Utility']['getRenderer'] = function() {
+window.Utility.autoSelectRenderer = function() {
   var userAgent = navigator.userAgent;
 
   /** Android 2.1 does not work with Canvas, force to use CSS renderer */
@@ -99,7 +59,7 @@ window['Utility']['getRenderer'] = function() {
    * @return {*}
    */
   function fakeConsoleLog() {
-    if (!global['LWFLOADER_ENABLE_DEBUG']) {
+    if (!global.LWFLOADER_ENABLE_DEBUG) {
       return;
     }
 
@@ -130,7 +90,7 @@ window['Utility']['getRenderer'] = function() {
    * @return {*}
    */
   function fakeConsoleWarn() {
-    if (!global['LWFLOADER_ENABLE_DEBUG']) {
+    if (!global.LWFLOADER_ENABLE_DEBUG) {
       return;
     }
     return deviceNativeConsoleFunction.warn.apply(global.console, arguments);
@@ -142,7 +102,7 @@ window['Utility']['getRenderer'] = function() {
    * @return {*}
    */
   function fakeConsoleError() {
-    if (!global['LWFLOADER_ENABLE_DEBUG']) {
+    if (!global.LWFLOADER_ENABLE_DEBUG) {
       return;
     }
     return deviceNativeConsoleFunction.error.apply(global.console, arguments);
