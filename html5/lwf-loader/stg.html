@@ -5,6 +5,7 @@
   <meta name="format-detection" content="telephone=no">
   <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no,maximum-scale=1.0,minimum-scale=1.0" />
 
+  <link rel="stylesheet" type="text/css" href="css/sample.css">
   <script type="text/javascript" src="js/lwf.js"></script>
   <script type="text/javascript" src="js/underscore-min.js"></script>
   <script type="text/javascript" src="lwf-loader/js/lwf-util.js"></script>
@@ -14,7 +15,20 @@
     var setting = {
       lwf: "DemoSTG.lwf",
       prefix: "./stg-sample/",
-      privateData: {}
+      privateData: {},
+      onprogress: function(loadedCount,total) {
+        var myLoadingElem = document.getElementById("loading");
+        var myGaugeElem = myLoadingElem.querySelector("b.gauge");
+        var myPercentElem = myLoadingElem.querySelector("b.percent");
+
+        if (loadedCount == total) {
+          myLoadingElem.parentNode.removeChild(myLoadingElem);
+        } else {
+          var currentProgress = 100 * loadedCount / total;
+          myGaugeElem.style.width = myPercentElem.textContent = 'Now Loading: ' +
+            Math.ceil(currentProgress / 2 + 50) + '%';
+        }
+      }
     };
 
     var displaySetting = {
@@ -40,10 +54,14 @@
   </script>
 </head>
 <body style="margin: 0px">
+<p class="header"><span>LWF for HTML5 using LWF Loader - Loading Multiple Resources Demo</span></p>
+<div id="loading"><b class="gauge percent" style="margin: 0 auto;"></b></div>
 <div id="stg" class='lwf' style="margin: 0 auto;">
   <div id="back" style="background-color: #000000"></div>
 </div>
-
+<center style="margin-top:30px">
+  <a href="http://gree.github.com/lwf/"><img src="http://gree.github.com/lwf-demo/images/LWF-logo.png" height=100></a>
+</center>
 <div id='guild-create' class='lwf'></div>
 </body>
 </html>

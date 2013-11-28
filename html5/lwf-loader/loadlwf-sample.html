@@ -4,6 +4,8 @@
   <meta charset="utf-8">
   <meta name="format-detection" content="telephone=no">
   <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no,maximum-scale=1.0,minimum-scale=1.0" />
+
+  <link rel="stylesheet" type="text/css" href="css/sample.css">
   <script type="text/javascript" src="js/lwf.js"></script>
   <script type="text/javascript" src="js/underscore-min.js"></script>
   <script type="text/javascript" src="lwf-loader/js/lwf-util.js"></script>
@@ -13,8 +15,7 @@
     var setting = {
       lwf:'base/base.lwf',
       prefix: "./loadlwf-sample/",
-      privateData: {
-      },
+      privateData: {},
       imageMap: {
         'atlas.png' : 'base/atlas.png'
       },
@@ -33,6 +34,10 @@
   </script>
 </head>
 <body style="margin: 0px;">
-<div id='lwf-sample' class='lwf'></div>
+<p class="header"><span>LWF for HTML5 using LWF Loader - Loading Multiple Resources Demo</span></p>
+<div id='lwf-sample' class='lwf' style="width:320px; height:420px; margin:0 auto;"></div>
+<center style="margin-top:30px">
+  <a href="http://gree.github.com/lwf/"><img src="http://gree.github.com/lwf-demo/images/LWF-logo.png" height=100></a>
+</center>
 </body>
 </html>

@@ -56,18 +56,18 @@
           }
         };
 
-        var lwfLoader = new window['LwfLoader']();
+        var lwfLoader = new window.LwfLoader();
 
         window.addEventListener('DOMContentLoaded', function() {
           var element = document.getElementById('card-lwf');
           lwfLoader.addInitializeHook(paramHandler);
           lwfLoader.addInitializeHook(paramCallback);
-          lwfLoader['playLWF'](element, setting);
+          lwfLoader.playLWF(element, setting);
         });
     </script>
 </head>
 <body>
-<p class="header"><span>LWF for HTML5/Canvas using LWF Loader - sample2</span></p>
+<p class="header"><span>LWF for HTML5 using LWF Loader - sample2</span></p>
 <div id='card-lwf' class='lwf' style="width:320px; height:420px; margin:0 auto;">
   <div id="loading"><b class="gauge percent"></b></div>
 </div>
