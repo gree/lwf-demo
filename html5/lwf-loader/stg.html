@@ -8,8 +8,7 @@
   <link rel="stylesheet" type="text/css" href="css/sample.css">
   <script type="text/javascript" src="js/lwf.js"></script>
   <script type="text/javascript" src="js/underscore-min.js"></script>
-  <script type="text/javascript" src="lwf-loader/js/lwf-util.js"></script>
-  <script type="text/javascript" src="lwf-loader/js/lwf-loader.js"></script>
+  <script type="text/javascript" src="js/lwf-loader.min.js"></script>
 
   <script type="text/javascript">
     var setting = {
@@ -32,11 +31,10 @@
     };
 
     var displaySetting = {
-      resizeMode: "fitForWidth",
-      resizeStretch: true,
+      resizeMode: "fitToScreen",
       displayDivId: 'stg',
-      widthLimit: 437,
-      heightLimit: 575
+      screenWidth: 437,
+      screenHeight: 575
     };
 
     window.addEventListener('DOMContentLoaded', function() {
